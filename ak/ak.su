@@ -1,0 +1,81 @@
+CLASS GameAction
+    FUN new(playerId, objectId, priorityCalculator)
+        @.playerId = playerId
+        @.objectId = objectId
+        
+    METHOD priority()
+        RAISE AbstractMethodException.new()
+
+    METHOD calculatePriority(calculator)
+        RETURN calculator.calculate(@, @.objectId);
+
+
+CLASS GameObject
+
+    METHOD perform(action)
+        RAISE AbstractMethodException.new()
+
+    METHOD getInitiative()
+        RAISE AbstractMethodException.new()
+
+
+CLASS Game
+    
+    METHOD getObject(objectId)
+        RAISE AbstractMethodException.new()
+
+    METHOD getPlayers()
+        RAISE AbstractMethodException.new()
+
+
+CLASS GameFactory
+
+    METHOD getGame()
+        // TODO: Overrride in subclass
+        RAISE AbstractMethodException.new()
+
+
+calculator = NULL
+FUN set_calculator(c)
+    calculator = c
+    
+
+CLASS SimplePriorityCalculator
+
+    FUN new(game)
+        @.game = game
+
+    METHOD calculate(action, objectId)
+        RETURN action.priority + @.game.getObject(objectId).getInitiative();
+
+
+CLASS GameActionQueue
+
+    FUN new(gameFactory)
+        @.gameFactory = gameFactory
+        @.playersMoves = {}
+
+    METHOD perform(player, actions)
+        @.playersMoves[player.id] = actions;
+        allPlayersMoved = TRUE
+        FOR player IN players
+            IF NOT player.id IN @.playerMoves
+                allPlayersMoved = FALSE
+                BREAK
+        IF allPlayersMoved
+            @.commit();
+
+    METHOD commit()
+        game = gameFactory.getGame()
+        actions = []
+        FOR playerId, playerActions IN @.playersMoves
+            FOR playerAction IN playerActions:
+                playerAction.full_priority = playerAction.calculatePriority(calculator)
+            actions.extend(playerActions)
+        FUN key(x)
+            RETURN x.full_priority
+        playerActions.sort(by=key);
+        FOR action IN actions
+            object = game.getObject(action.objectId)
+            object.perform(action)
+
