@@ -20,7 +20,7 @@ CLASS AdresAlternatywnyWidget
 	FUN new(uiElement, userProfileModel, adresWysylaniaKorespondencjiWidget)
 		@.uiElement = uiElement
 		@.userProfileModel = userProfileModel
-@.adresWysylaniaKorespondencjiWidget = adresWysylaniaKorespondencjiWidget
+		@.adresWysylaniaKorespondencjiWidget = adresWysylaniaKorespondencjiWidget
 
 	METHOD show()
 		uiElement.bind(‘formularzEdycjiAdresuAlternatywnego’)
@@ -29,24 +29,24 @@ CLASS AdresAlternatywnyWidget
 		uiElement.onFormSave(onSave)
 // When form is saved update adres wysylania korespondencji widget
 		FUN onSaved(newAdresAlter)
-adresWysylaniaKorespondencjiWidget.updateData(newAdresAlter)
+			@.adresWysylaniaKorespondencjiWidget.updateData(newAdresAlter)
 		uiElement.onFormSaved(onSaved)
 
 CLASS AdresWysylaniaKorespondencjiWidget
 
 // Widget informujący o adresie do wysyłania korespondencji
 	
-FUN new(uiElement, userProfileModel)
+	FUN new(uiElement, userProfileModel)
 		@.uiElement = uiElement
 		@.userProfileModel = userProfileModel
 
 	METHOD show()
-adres = @.userProfileModel.getAdresZamieszkania()
-IF adres.empty()
-	adres = @.userProfileModel.getAdresKorespondencji()
-@.uiElement.bind(‘adresWysylaniaKoresp’).update(‘adres’, adres)
+		adres = @.userProfileModel.getAdresZamieszkania()
+		IF adres.empty()
+			adres = @.userProfileModel.getAdresKorespondencji()
+		@.uiElement.bind(‘adresWysylaniaKoresp’).update(‘adres’, adres)
 
-METHOD updateData(newAdresAlter)
-@.uiElement.bind(‘adresWysylaniaKoresp’).update(‘adres’, newAdresAlter)
+	METHOD updateData(newAdresAlter)
+		@.uiElement.bind(‘adresWysylaniaKoresp’).update(‘adres’, newAdresAlter)
 
 
