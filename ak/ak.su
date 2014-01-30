@@ -69,7 +69,7 @@ CLASS GameActionQueue
         game = gameFactory.getGame()
         actions = []
         FOR playerId, playerActions IN @.playersMoves
-            FOR playerAction IN playerActions:
+            FOR playerAction IN playerActions
                 playerAction.full_priority = playerAction.calculatePriority(calculator)
             actions.extend(playerActions)
         FUN key(x)
